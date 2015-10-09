@@ -124,30 +124,30 @@
         }
      ]
      */
-    NSMutableArray* urlArray = [NSMutableArray array];
-    [self filtUrlWithUrlArray:urlArray];
-    
+//    NSMutableArray* urlArray = [NSMutableArray array];
+//    [self filtUrlWithUrlArray:urlArray];
+//    
     
     NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] initWithString:self.text
                                                                                 attributes:initAttrbutes];
     
     //检测url
-//    NSArray* urlMatches = [[NSRegularExpression regularExpressionWithPattern:RxUrlRegular
-//                                                                     options:NSRegularExpressionDotMatchesLineSeparators error:nil]
-//                           matchesInString:self.text
-//                           options:0
-//                           range:NSMakeRange(0, self.text.length)];
-//    
-//    for (NSTextCheckingResult* match in urlMatches) {
-//        NSString* urlStr = [self.text substringWithRange:match.range];
-//        
-//        [attrStr addAttributes:@{
-//                                 @"url":urlStr,
-//                                 NSBackgroundColorAttributeName:(id)[UIColor redColor],
-//                                 (NSString*)kCTForegroundColorAttributeName:(id)self.linkColor.CGColor
-//                                 }
-//                         range:match.range];
-//    }
+    NSArray* urlMatches = [[NSRegularExpression regularExpressionWithPattern:RxUrlRegular
+                                                                     options:NSRegularExpressionDotMatchesLineSeparators error:nil]
+                           matchesInString:self.text
+                           options:0
+                           range:NSMakeRange(0, self.text.length)];
+    
+    for (NSTextCheckingResult* match in urlMatches) {
+        NSString* urlStr = [self.text substringWithRange:match.range];
+        
+        [attrStr addAttributes:@{
+                                 @"url":urlStr,
+                                 NSBackgroundColorAttributeName:(id)[UIColor redColor],
+                                 (NSString*)kCTForegroundColorAttributeName:(id)self.linkColor.CGColor
+                                 }
+                         range:match.range];
+    }
     
     
     CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attrStr);
