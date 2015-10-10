@@ -4,19 +4,22 @@
 
 like the screen shot
 
-![image](http://img.hb.aicdn.com/844c8e384516f23d409ea8166a385924625af4efc8a1-e4Rnl3_fw658 =320x568)
+![image](http://img.hb.aicdn.com/05e9f76fa5bd21d34f48a29a294736f2ee25060f6e0e-tGPJXX_fw658)
 
 ### usage
 you can use it just like a UITextView
    
 <code>
+	NSString* textStr = @"http://weibo.com hello, thank you and you??? http://baidu.com";
+	CGFloat height = [RxTextView heightForText:textStr width:(SCREEN_WIDTH-60) font:[UIFont systemFontOfSize:16] linespacing:5];
+	
 	textView = [[RxTextView alloc] initWithFrame:CGRectMake(30, 30, (SCREEN_WIDTH-60), height)];
-    textView.textColor = [UIColor grayColor];
-    textView.font = [UIFont systemFontOfSize:fontSize];
-    textView.linespacing = lineSpacing;
-    textView.linkButtonColor = [UIColor redColor];
-    textView.text = fuckStr;
-    textView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2];
-    textView.delegate = self;
-    [self.view addSubview:textView];
+    	textView.textColor = [UIColor grayColor];
+    	textView.font = [UIFont systemFontOfSize:16];
+    	textView.linespacing = 5;
+    	textView.linkButtonColor = [UIColor redColor];
+    	textView.text = textStr;
+    	textView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2];
+    	textView.delegate = self;
+	[self.view addSubview:textView];
 </code>
