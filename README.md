@@ -9,7 +9,6 @@ like the screen shot
 ### usage
 you can use it just like a UITextView
    
-<code>
 		NSString* textStr = @"http://weibo.com hello, thank you and you??? http://baidu.com";
 		CGFloat height = [RxTextView heightForText:textStr width:(SCREEN_WIDTH-60) font:[UIFont systemFontOfSize:16] 			linespacing:5];
 		textView = [[RxTextView alloc] initWithFrame:CGRectMake(30, 30, (SCREEN_WIDTH-60), height)];
@@ -21,4 +20,3 @@ you can use it just like a UITextView
 		textView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2];
 		textView.delegate = self;
 		[self.view addSubview:textView];
-</code>
