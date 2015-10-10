@@ -36,11 +36,11 @@ static NSString* fuckStr = @"http://weibo.com hello, thank you and you??? http:/
     CGFloat height = [RxTextView heightForText:fuckStr width:(SCREEN_WIDTH-60) font:[UIFont systemFontOfSize:fontSize] linespacing:lineSpacing];
     NSLog(@"now height %f",height);
     
-    textView = [[RxTextView alloc] initWithFrame:CGRectMake(30, 30, (SCREEN_WIDTH-60), SCREEN_HEIGHT)];
+    textView = [[RxTextView alloc] initWithFrame:CGRectMake(30, 30, (SCREEN_WIDTH-60), height)];
     textView.textColor = [UIColor grayColor];
     textView.font = [UIFont systemFontOfSize:fontSize];
     textView.linespacing = lineSpacing;
-    textView.linkColor = [UIColor redColor];
+//    textView.linkButtonColor = [UIColor redColor];
     textView.text = fuckStr;
     textView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2];
     textView.delegate = self;

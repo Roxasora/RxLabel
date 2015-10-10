@@ -31,8 +31,7 @@
     if (self) {
         _font = [UIFont systemFontOfSize:16];
         _textColor = UIColorFromRGB(0X333333);
-        _linkColor = UIColorFromRGB(0X2081ef);
-        _linkTapViewColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.35];
+        _linkButtonColor = UIColorFromRGB(0X2081ef);
         _linespacing = 0;
         
         self.backgroundColor = [UIColor clearColor];
@@ -61,10 +60,15 @@
     [self setNeedsDisplay];
 }
 
--(void)setLinkColor:(UIColor *)linkColor{
-    _linkColor = linkColor;
-    self.linkTapViewColor = linkColor;
-//    [self setNeedsDisplay];
+-(void)setLinkButtonColor:(UIColor *)linkButtonColor{
+    _linkButtonColor = linkButtonColor;
+    for (UIView* subview in self.subviews) {
+        if (subview.tag == NSIntegerMin) {
+            RxTextLinkTapView* tapView = (RxTextLinkTapView*)tapView;
+            //            tapView.tapColor = linkTapViewColor;
+            tapView.backgroundColor = linkButtonColor;
+        }
+    }
 }
 
 -(void)setlinespacing:(NSInteger)linespacing{
@@ -72,16 +76,6 @@
     [self setNeedsDisplay];
 }
 
--(void)setLinkTapViewColor:(UIColor *)linkTapViewColor{
-    _linkTapViewColor = linkTapViewColor;
-    for (UIView* subview in self.subviews) {
-        if (subview.tag == NSIntegerMin) {
-            RxTextLinkTapView* tapView = (RxTextLinkTapView*)tapView;
-//            tapView.tapColor = linkTapViewColor;
-            tapView.backgroundColor = linkTapViewColor;
-        }
-    }
-}
 
 #pragma mark - url replace run delegate
 static CGFloat ascentCallback(void *ref){
@@ -286,7 +280,7 @@ static CGFloat widthCallback(void* ref){
                                                                                    font:self.font
                                                                             linespacing:self.linespacing];
 //                hoverView.tapColor = self.linkTapViewColor;
-                hoverView.backgroundColor = self.linkColor;
+                hoverView.backgroundColor = self.linkButtonColor;
                 hoverView.tag = NSIntegerMin;
                 hoverView.delegate = self;
                 [self addSubview:hoverView];

@@ -36,14 +36,10 @@
 @property (nonatomic)NSInteger linespacing;
 
 /**
- *  color of link,default is custom blue
+ *  color of link button,default is custom blue
  */
-@property (nonatomic)UIColor* linkColor;
+@property (nonatomic)UIColor* linkButtonColor;
 
-/**
- *  color of hover view when link tapped default is lightgray with alpha 0.2
- */
-@property (nonatomic)UIColor* linkTapViewColor;
 
 /**
  *  get height with text width font and spacing
