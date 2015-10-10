@@ -40,6 +40,17 @@
  */
 @property (nonatomic)UIColor* linkButtonColor;
 
+/**
+ *  custom the color array of your own urls, like orange taobao, red tmall, and green douban
+ @[
+     @{
+        @"scheme":@"taobao",
+        @"title":@"淘宝",
+        @"color":@0Xff0000
+     }
+ ]
+ */
+@property (nonatomic)NSMutableArray* urlCustomArray;
 
 /**
  *  get height with text width font and spacing

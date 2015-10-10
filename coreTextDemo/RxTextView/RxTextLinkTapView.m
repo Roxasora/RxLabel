@@ -24,7 +24,7 @@
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.frame.size.height - titleFontSize)/2, self.frame.size.width, titleFontSize)];
         _titleLabel.font = [UIFont systemFontOfSize:titleFontSize];
         _titleLabel.textColor = [UIColor whiteColor];
-        _titleLabel.text = self.replaceTitle;
+        _titleLabel.text = self.title;
         _titleLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _titleLabel;
@@ -37,7 +37,7 @@
         self.highlighted = NO;
         self.backgroundColor = [UIColor clearColor];
         
-        self.replaceTitle = @"网页";
+        self.title = @"网页";
         self.isReplaceUrl =YES;
         
         self.linespacing = 0;
@@ -73,6 +73,13 @@
         [self addSubview:self.titleLabel];
     }else{
         self.backgroundColor = [UIColor clearColor];
+    }
+}
+
+-(void)setTitle:(NSString *)title{
+    _title = title;
+    if (self.titleLabel) {
+        self.titleLabel.text = title;
     }
 }
 

@@ -22,7 +22,7 @@
 }
 
 //static NSString* fuckStr = @"http://fuckyourSelf.com 下面我们来尝试完成一个基于 CoreText 的排版引擎。我们将从最简单的排版功能开始，然后逐步支持图文混排，链接点击等功能。http://baidu.com 我乐呵七大时间啊就是控件";
-static NSString* fuckStr = @"http://weibo.com hello, thank you and you??? http://baidu.com";
+static NSString* fuckStr = @"http://weibo.com hello, thank you and you??? http://baidu.com 除了正常链接以外，这是淘宝链接 http://taobao.com 这是豆瓣链接 http://douban.com";
 #define fontSize 17
 #define lineSpacing 5
 
@@ -44,6 +44,19 @@ static NSString* fuckStr = @"http://weibo.com hello, thank you and you??? http:/
     textView.text = fuckStr;
     textView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2];
     textView.delegate = self;
+    
+    textView.urlCustomArray = [@[
+                                @{
+                                    @"scheme":@"taobao",
+                                    @"title":@"淘宝",
+                                    @"color":@0XF97840
+                                    },
+                                @{
+                                    @"scheme":@"douban",
+                                    @"title":@"豆瓣",
+                                    @"color":@0X72E073
+                                    }
+                                ] mutableCopy];
     [self.view addSubview:textView];
     
     

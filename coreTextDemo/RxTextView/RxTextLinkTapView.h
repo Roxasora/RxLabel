@@ -55,7 +55,7 @@
 /**
  *  replaced title
  */
-@property (nonatomic)NSString* replaceTitle;
+@property (nonatomic)NSString* title;
 
 @end
 

@@ -275,15 +275,9 @@ static CGFloat widthCallback(void* ref){
                 
                 //create hover frame
             if ([attrbutes objectForKey:@"url"]) {
-                RxTextLinkTapView* hoverView = [[RxTextLinkTapView alloc] initWithFrame:runBounds
-                                                                                 urlStr:attrbutes[@"url"]
-                                                                                   font:self.font
-                                                                            linespacing:self.linespacing];
-//                hoverView.tapColor = self.linkTapViewColor;
-                hoverView.backgroundColor = self.linkButtonColor;
-                hoverView.tag = NSIntegerMin;
-                hoverView.delegate = self;
-                [self addSubview:hoverView];
+                NSString* urlStr = attrbutes[@"url"];
+                RxTextLinkTapView* linkButtonView = [self linkButtonViewWithFrame:runBounds UrlStr:urlStr];
+                [self addSubview:linkButtonView];
             }
         }
     }
@@ -295,6 +289,30 @@ static CGFloat widthCallback(void* ref){
     CFRelease(path);
 }
 
+-(RxTextLinkTapView*)linkButtonViewWithFrame:(CGRect)frame UrlStr:(NSString*)urlStr{
+    RxTextLinkTapView* buttonView = [[RxTextLinkTapView alloc] initWithFrame:frame
+                                                                     urlStr:urlStr
+                                                                       font:self.font
+                                                                linespacing:self.linespacing];
+    //                hoverView.tapColor = self.linkTapViewColor;
+    buttonView.tag = NSIntegerMin;
+    
+    buttonView.title = @"网页";
+    buttonView.backgroundColor = self.linkButtonColor;
+    buttonView.delegate = self;
+    
+    //handle custom url array
+    for (NSDictionary* item in self.urlCustomArray) {
+        NSString* scheme = item[@"scheme"];
+        //when match
+        if ([urlStr rangeOfString:scheme].location != NSNotFound) {
+            buttonView.backgroundColor = UIColorFromRGB([item[@"color"] integerValue]);
+            buttonView.title = item[@"title"];
+        }
+    }
+    
+    return buttonView;
+}
 
 +(void)filtUrlWithOriginText:(NSString *)originText urlArray:(NSMutableArray *)urlArray filteredText:(NSString *__autoreleasing *)filterText{
     *filterText = [NSString stringWithString:originText];
