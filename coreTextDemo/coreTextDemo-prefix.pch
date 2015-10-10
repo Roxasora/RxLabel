@@ -23,7 +23,7 @@
 #define HEIGHT_BOTTOMTAB 49.0
 #define HEIGHT_NAV_INNER_PAGE SCREEN_HEIGHT - HEIGHT_NAV
 
-//#define DEBUG 1
+//#define RXDEBUG 1
 
 #ifdef DEBUG
 #define debugLog(...) NSLog(__VA_ARGS__)

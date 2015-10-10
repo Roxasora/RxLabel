@@ -33,7 +33,7 @@
 /**
  *  linespacing default is 0
  */
-@property (nonatomic)NSInteger lineSpacing;
+@property (nonatomic)NSInteger linespacing;
 
 /**
  *  color of link,default is custom blue
@@ -51,11 +51,12 @@
  *  @param text text
  *  @param width width
  *  @param font font
- *  @param lineSpacing spacing
+ *  @param linespacing spacing
  *
  *  @return float height
  */
-+(CGFloat)heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font lineSpacing:(CGFloat)lineSpacing;
++(CGFloat)heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font linespacing:(CGFloat)linespacing;
++(void)filtUrlWithOriginText:(NSString*)originText urlArray:(NSMutableArray*)urlArray filteredText:(NSString**)filterText;
 
 @end
 

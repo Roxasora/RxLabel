@@ -18,6 +18,7 @@
 #define rxHighlightTextTypeUrl @"url"
 
 #define subviewsTag_linkTapViews -333
+#define lineHeight_correction 3 //correct the line height
 
 @interface RxTextView ()<RxTextLinkTapViewDelegate>
 
@@ -32,11 +33,16 @@
         _textColor = UIColorFromRGB(0X333333);
         _linkColor = UIColorFromRGB(0X2081ef);
         _linkTapViewColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.35];
-        _lineSpacing = 0;
+        _linespacing = 0;
         
         self.backgroundColor = [UIColor clearColor];
     }
     return self;
+}
+
+-(void)setFrame:(CGRect)frame{
+    [super setFrame:frame];
+    [self setNeedsDisplay];
 }
 
 -(void)setText:(NSString *)text{
@@ -57,11 +63,12 @@
 
 -(void)setLinkColor:(UIColor *)linkColor{
     _linkColor = linkColor;
-    [self setNeedsDisplay];
+    self.linkTapViewColor = linkColor;
+//    [self setNeedsDisplay];
 }
 
--(void)setLineSpacing:(NSInteger)lineSpacing{
-    _lineSpacing = lineSpacing;
+-(void)setlinespacing:(NSInteger)linespacing{
+    _linespacing = linespacing;
     [self setNeedsDisplay];
 }
 
@@ -70,10 +77,29 @@
     for (UIView* subview in self.subviews) {
         if (subview.tag == NSIntegerMin) {
             RxTextLinkTapView* tapView = (RxTextLinkTapView*)tapView;
-            tapView.tapColor = linkTapViewColor;
+//            tapView.tapColor = linkTapViewColor;
+            tapView.backgroundColor = linkTapViewColor;
         }
     }
 }
+
+#pragma mark - url replace run delegate
+static CGFloat ascentCallback(void *ref){
+    return [(__bridge UIFont*)ref pointSize] + 2;
+    return 18.0;
+    return [(NSNumber*)[(__bridge NSDictionary*)ref objectForKey:@"height"] floatValue];
+}
+
+static CGFloat descentCallback(void *ref){
+    return 0;
+}
+
+static CGFloat widthCallback(void* ref){
+    return 70.0;
+    return [(NSNumber*)[(__bridge NSDictionary*)ref objectForKey:@"width"] floatValue];
+}
+
+#pragma mark - draw rect
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
@@ -81,32 +107,47 @@
     [super drawRect:rect];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-//    CGContextClearRect(context, self.bounds);
+    CGContextClearRect(context, self.bounds);
     
+    if (self.backgroundColor) {
+        CGContextSaveGState(context);
+        CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
+        CGContextFillRect(context, self.bounds);
+        CGContextRestoreGState(context);
+    }
+    
+    //translate the coordinate system to normal
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
     CGContextTranslateCTM(context, 0, self.bounds.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
     
+    //create the draw path
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRect(path, NULL, self.bounds);
+    
+    //挪动path的bound，避免(ಥ_ಥ) 这样的符号会画不出来
+    //move the bound of path,or some words like (ಥ_ಥ) won't be drawn
+    CGRect pathRect = self.bounds;
+    pathRect.size.height += 5;
+    pathRect.origin.y -= 5;
+    CGPathAddRect(path, NULL, pathRect);
     
     //set line height font color and break mode
     CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)self.font.fontName, self.font.pointSize, NULL);
-    CGFloat minLineHeight = self.font.pointSize+3,
+    CGFloat minLineHeight = self.font.pointSize + lineHeight_correction,
     maxLineHeight = minLineHeight,
-    lineSpacing = self.lineSpacing;
+    linespacing = self.linespacing;
     
     CTLineBreakMode lineBreakMode = kCTLineBreakByWordWrapping;
     CTTextAlignment alignment = kCTLeftTextAlignment;
     
-    CTParagraphStyleRef style = CTParagraphStyleCreate((CTParagraphStyleSetting[6]){
+    CTParagraphStyleRef style = CTParagraphStyleCreate((CTParagraphStyleSetting[4]){
         {kCTParagraphStyleSpecifierAlignment,sizeof(alignment),&alignment},
-        {kCTParagraphStyleSpecifierMinimumLineHeight,sizeof(minLineHeight),&minLineHeight},
-        {kCTParagraphStyleSpecifierMaximumLineHeight,sizeof(maxLineHeight),&maxLineHeight},
-        {kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(lineSpacing),&lineSpacing},
-        {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(lineSpacing),&lineSpacing},
+//        {kCTParagraphStyleSpecifierMinimumLineHeight,sizeof(minLineHeight),&minLineHeight},
+//        {kCTParagraphStyleSpecifierMaximumLineHeight,sizeof(maxLineHeight),&maxLineHeight},
+        {kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(linespacing),&linespacing},
+        {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(linespacing),&linespacing},
         {kCTParagraphStyleSpecifierLineBreakMode,sizeof(lineBreakMode),&lineBreakMode}
-    }, 6);
+    }, 4);
     
     
     NSDictionary* initAttrbutes = @{
@@ -116,6 +157,7 @@
                                     };
    
     //先从self text 中过滤掉 url ，将其保存在array中
+    //filter the url string from origin text and generate the urlArray and the filtered text string
     /**
      @[
         @{
@@ -124,20 +166,39 @@
         }
      ]
      */
-//    NSMutableArray* urlArray = [NSMutableArray array];
-//    [self filtUrlWithUrlArray:urlArray];
-//    
+    NSMutableArray* urlArray = [NSMutableArray array];
+    NSString* filteredText = [[NSString alloc] init];
+    [RxTextView filtUrlWithOriginText:self.text urlArray:urlArray filteredText:&filteredText];
     
-    NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] initWithString:self.text
+    //init the attributed string
+    NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] initWithString:filteredText
                                                                                 attributes:initAttrbutes];
-    
+    //add url replaced run one by one with urlArray
+    for (NSDictionary* urlItem in urlArray) {
+        //init run callbacks
+        CTRunDelegateCallbacks callbacks;
+        memset(&callbacks, 0, sizeof(CTRunDelegateCallbacks));
+        callbacks.version = kCTRunDelegateVersion1;
+        callbacks.getAscent = ascentCallback;
+        callbacks.getDescent = descentCallback;
+        callbacks.getWidth = widthCallback;
+        CTRunDelegateRef delegate = CTRunDelegateCreate(&callbacks, (__bridge void*)(self.font));
+        
+        NSRange range = [[urlItem objectForKey:@"range"] rangeValue];
+        NSString* urlStr = [urlItem objectForKey:@"urlStr"];
+        CFAttributedStringSetAttributes((CFMutableAttributedStringRef)attrStr, CFRangeMake(range.location, range.length), (CFDictionaryRef)@{
+                                                                                                                                             (NSString*)kCTRunDelegateAttributeName:(__bridge id)delegate,
+                                                                                                                                             @"url":urlStr
+                                                                                                                                             }, NO);
+        CFRelease(delegate);
+    }
+    /*
     //检测url
     NSArray* urlMatches = [[NSRegularExpression regularExpressionWithPattern:RxUrlRegular
                                                                      options:NSRegularExpressionDotMatchesLineSeparators error:nil]
                            matchesInString:self.text
                            options:0
                            range:NSMakeRange(0, self.text.length)];
-    
     for (NSTextCheckingResult* match in urlMatches) {
         NSString* urlStr = [self.text substringWithRange:match.range];
         
@@ -146,14 +207,20 @@
                                  NSBackgroundColorAttributeName:(id)[UIColor redColor],
                                  (NSString*)kCTForegroundColorAttributeName:(id)self.linkColor.CGColor
                                  }
-                         range:match.range];
-    }
+                         range:match.range]; 
+     }
+     */
     
     
     CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attrStr);
+    
+    CGSize restrictSize = CGSizeMake(self.bounds.size.width, 10000);
+    CGSize coreTestSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, 0), nil, restrictSize, nil);
+//    NSLog(@"drawn size %@",[NSValue valueWithCGSize:coreTestSize]);
+    
     CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, attrStr.length), path, NULL);
     
-    //create link tap views
+    //clear link tap views and create new link tap view
     for (UIView* subview in self.subviews) {
         if (subview.tag == NSIntegerMin) {
             [subview removeFromSuperview];
@@ -179,9 +246,7 @@
             CTRunRef run = CFArrayGetValueAtIndex(glyphRuns, i);
             
             NSDictionary* attrbutes = (NSDictionary*)CTRunGetAttributes(run);
-//            NSLog(@"%@",attrbutes);
             
-            if ([attrbutes objectForKey:@"url"]) {
                 CGRect runBounds;
                 
                 CGFloat ascent;
@@ -191,19 +256,37 @@
                 
                 runBounds.origin.x = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, NULL);
                 runBounds.origin.y = self.frame.size.height - origins[index].y - runBounds.size.height;
-                
+            
+                //加上之前给 path 挪动位置时的修正
+                //add correction of move the path
+                runBounds.origin.y += 5;
+            
 #ifdef RXDEBUG
                 UIView* randomView = [[UIView alloc] initWithFrame:runBounds];
                 randomView.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:0.2];
                 [self addSubview:randomView];
 #endif
                 
+//                CGRect rect = runBounds;
+//                rect.origin.y += 3;
+//                //create temp
+//                UIButton* tempView = [[UIButton alloc] initWithFrame:rect];
+//                tempView.layer.cornerRadius = 3;
+//                tempView.backgroundColor = [UIColor blueColor];
+//                [tempView setTitle:@"网页链接" forState:UIControlStateNormal];
+//                [tempView setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//                [tempView setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
+//                [tempView.titleLabel setFont:[UIFont systemFontOfSize:11]];
+//                [self addSubview:tempView];
+                
                 //create hover frame
+            if ([attrbutes objectForKey:@"url"]) {
                 RxTextLinkTapView* hoverView = [[RxTextLinkTapView alloc] initWithFrame:runBounds
                                                                                  urlStr:attrbutes[@"url"]
                                                                                    font:self.font
-                                                                            lineSpacing:self.lineSpacing];
-                hoverView.tapColor = self.linkTapViewColor;
+                                                                            linespacing:self.linespacing];
+//                hoverView.tapColor = self.linkTapViewColor;
+                hoverView.backgroundColor = self.linkColor;
                 hoverView.tag = NSIntegerMin;
                 hoverView.delegate = self;
                 [self addSubview:hoverView];
@@ -219,45 +302,37 @@
 }
 
 
--(void)filtUrlWithUrlArray:(NSMutableArray*)urlArray{
++(void)filtUrlWithOriginText:(NSString *)originText urlArray:(NSMutableArray *)urlArray filteredText:(NSString *__autoreleasing *)filterText{
+    *filterText = [NSString stringWithString:originText];
     NSArray* urlMatches = [[NSRegularExpression regularExpressionWithPattern:RxUrlRegular
                                                                      options:NSRegularExpressionDotMatchesLineSeparators error:nil]
-                           matchesInString:self.text
+                           matchesInString:originText
                            options:0
-                           range:NSMakeRange(0, self.text.length)];
+                           range:NSMakeRange(0, originText.length)];
 
     //range 的偏移量，每次replace之后，下次循环中，要加上这个偏移量
+//    NSLog(@"origin text %@ matched%@",originText,urlMatches);
     NSInteger rangeOffset = 0;
     for (NSTextCheckingResult* match in urlMatches) {
-        NSString* urlStr = [self.text substringWithRange:match.range];
-        
         NSRange range = match.range;
+        NSString* urlStr = [originText substringWithRange:range];
+        
         range.location += rangeOffset;
         rangeOffset -= (range.length - 1);
        
         unichar objectReplacementChar = 0xFFFC;
         NSString * replaceContent = [NSString stringWithCharacters:&objectReplacementChar length:1];
-        self.text = [self.text stringByReplacingCharactersInRange:range withString:replaceContent];
+        *filterText = [*filterText stringByReplacingCharactersInRange:range withString:replaceContent];
         
         range.length = 1;
         [urlArray addObject:@{
                               @"range":[NSValue valueWithRange:range],
                               @"urlStr":urlStr
                               }];
-//        [attrStr addAttributes:@{
-//                                 @"url":urlStr,
-//                                 NSBackgroundColorAttributeName:(id)[UIColor redColor],
-//                                 (NSString*)kCTForegroundColorAttributeName:(id)self.linkColor.CGColor
-//                                 }
-//                         range:match.range];
     }
 }
 
-
-
-
-
-+(CGFloat)heightForText:(NSString *)text width:(CGFloat)width font:(UIFont *)font lineSpacing:(CGFloat)lineSpacing{
++(CGFloat)heightForText:(NSString *)text width:(CGFloat)width font:(UIFont *)font linespacing:(CGFloat)linespacing{
     CGFloat height = 0;
     
     CGMutablePathRef path = CGPathCreateMutable();
@@ -266,20 +341,20 @@
     //set line height font color and break mode
     CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
     
-    CGFloat minLineHeight = font.pointSize+3,
+    CGFloat minLineHeight = font.pointSize + lineHeight_correction,
     maxLineHeight = minLineHeight;
     
     CTLineBreakMode lineBreakMode = kCTLineBreakByWordWrapping;
     CTTextAlignment alignment = kCTLeftTextAlignment;
     
-    CTParagraphStyleRef style = CTParagraphStyleCreate((CTParagraphStyleSetting[6]){
+    CTParagraphStyleRef style = CTParagraphStyleCreate((CTParagraphStyleSetting[4]){
         {kCTParagraphStyleSpecifierAlignment,sizeof(alignment),&alignment},
-                {kCTParagraphStyleSpecifierMinimumLineHeight,sizeof(minLineHeight),&minLineHeight},
-                {kCTParagraphStyleSpecifierMaximumLineHeight,sizeof(maxLineHeight),&maxLineHeight},
-        {kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(lineSpacing),&lineSpacing},
-        {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(lineSpacing),&lineSpacing},
+//        {kCTParagraphStyleSpecifierMinimumLineHeight,sizeof(minLineHeight),&minLineHeight},
+//        {kCTParagraphStyleSpecifierMaximumLineHeight,sizeof(maxLineHeight),&maxLineHeight},
+        {kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(linespacing),&linespacing},
+        {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(linespacing),&linespacing},
         {kCTParagraphStyleSpecifierLineBreakMode,sizeof(lineBreakMode),&lineBreakMode}
-    }, 6);
+    }, 4);
     
     
     NSDictionary* initAttrbutes = @{
@@ -287,10 +362,44 @@
                                     (NSString*)kCTParagraphStyleAttributeName:(id)style
                                     };
     
-    NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] initWithString:text
+    NSMutableArray* urlArray = [NSMutableArray array];
+    NSString* filteredText = [[NSString alloc] init];
+    [RxTextView filtUrlWithOriginText:text urlArray:urlArray filteredText:&filteredText];
+    
+    //create the initial attributed string
+    NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] initWithString:filteredText
                                                                                 attributes:initAttrbutes];
     
+    for (NSDictionary* urlItem in urlArray) {
+        //init run callbacks
+        CTRunDelegateCallbacks callbacks;
+        memset(&callbacks, 0, sizeof(CTRunDelegateCallbacks));
+        callbacks.version = kCTRunDelegateVersion1;
+        callbacks.getAscent = ascentCallback;
+        callbacks.getDescent = descentCallback;
+        callbacks.getWidth = widthCallback;
+        CTRunDelegateRef delegate = CTRunDelegateCreate(&callbacks, (__bridge void*)(font));
+        
+        NSRange range = [[urlItem objectForKey:@"range"] rangeValue];
+        NSString* urlStr = [urlItem objectForKey:@"urlStr"];
+        CFAttributedStringSetAttributes((CFMutableAttributedStringRef)attrStr, CFRangeMake(range.location, range.length), (CFDictionaryRef)@{
+                                                                                                                                             (NSString*)kCTRunDelegateAttributeName:(__bridge id)delegate,
+                                                                                                                                             @"url":urlStr
+                                                                                                                                             }, NO);
+        CFRelease(delegate);
+    }
+    
+
     CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attrStr);
+    
+    CGSize restrictSize = CGSizeMake(width, 10000);
+    CGSize coreTestSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, 0), nil, restrictSize, nil);
+//    NSLog(@"calcuted size %@",[NSValue valueWithCGSize:coreTestSize]);
+    
+    height = coreTestSize.height;
+    height += 5;
+    
+    return height;
     CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, attrStr.length), path, NULL);
     
     //get lines in frame
@@ -309,30 +418,6 @@
     height += 6;
     height = ceilf(height);
     
-//    for (CFIndex index = 0; index < lineCount; index++) {
-//        //get line ref of line
-//        CTLineRef line = CFArrayGetValueAtIndex((CFArrayRef)lines, index);
-//
-//        //get run
-//        CFArrayRef glyphRuns = CTLineGetGlyphRuns(line);
-//        CFIndex glyphCount = CFArrayGetCount(glyphRuns);
-//        
-//        CTRunRef run = CFArrayGetValueAtIndex(glyphRuns, 0);
-//        
-//        CGRect runBounds;
-//        
-//        CGFloat ascent;
-//        CGFloat descent;
-//        runBounds.size.width = CTRunGetTypographicBounds(run, CFRangeMake(0, 0), &ascent, &descent, NULL);
-//        runBounds.size.height = ascent + descent;
-//        
-//        height += runBounds.size.height;
-//        NSLog(@"now run %@",NSStringFromCGRect(runBounds));
-//        
-//        runBounds.origin.x = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, NULL);
-//        runBounds.origin.y = 9999 - origins[index].y - runBounds.size.height;
-//    }
-    CFRelease(frame);
     CFRelease(frameSetter);
     
     return height;

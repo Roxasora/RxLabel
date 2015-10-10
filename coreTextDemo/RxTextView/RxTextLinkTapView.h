@@ -20,7 +20,7 @@
  *
  *  @return instance
  */
--(id)initWithFrame:(CGRect)frame urlStr:(NSString*)urlStr font:(UIFont*)font lineSpacing:(CGFloat)lineSpacing;
+-(id)initWithFrame:(CGRect)frame urlStr:(NSString*)urlStr font:(UIFont*)font linespacing:(CGFloat)linespacing;
 
 /**
  *  delegate
@@ -41,6 +41,22 @@
  *  color when tapped
  */
 @property (nonatomic)UIColor* tapColor;
+
+/**
+ *  line height of parent text view default is 0
+ */
+@property (nonatomic)CGFloat linespacing;
+
+/**
+ *  if replace the url,if yes then show a small round corner button with title, if no then show a hover layer
+ */
+@property (nonatomic)BOOL isReplaceUrl;
+
+/**
+ *  replaced title
+ */
+@property (nonatomic)NSString* replaceTitle;
+
 @end
 
 @protocol RxTextLinkTapViewDelegate <NSObject>

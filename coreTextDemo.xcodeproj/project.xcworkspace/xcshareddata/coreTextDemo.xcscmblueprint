@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "69FAEEA99F1948EACA970CD0FD020472264C88E1",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "69FAEEA99F1948EACA970CD0FD020472264C88E1" : 0,
+    "DB5B544D38C3EC4C31E5768D07E04D1C7E2168DD" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D536A5ED-A04E-4C92-A38A-F6CAA3CF18F9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "69FAEEA99F1948EACA970CD0FD020472264C88E1" : "coreTextDemo\/",
+    "DB5B544D38C3EC4C31E5768D07E04D1C7E2168DD" : "..\/..\/..\/gitRep\/VVeboTableViewDemo"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "coreTextDemo",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "coreTextDemo.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Roxasora\/RxTextView.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "69FAEEA99F1948EACA970CD0FD020472264C88E1"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/johnil\/VVeboTableViewDemo.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DB5B544D38C3EC4C31E5768D07E04D1C7E2168DD"
+    }
+  ]
+}
