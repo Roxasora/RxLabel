@@ -4,7 +4,7 @@
 
 like the screen shot
 
-![image](http://img.hb.aicdn.com/05e9f76fa5bd21d34f48a29a294736f2ee25060f6e0e-tGPJXX_fw658)
+![image](http://img.hb.aicdn.com/e0184526e5a4355fe8374b6cd01ffc9ea56973529276-32CcAY_fw658)
 
 ### usage
 you can use it just like a UITextView
@@ -19,4 +19,19 @@ you can use it just like a UITextView
 		textView.text = textStr;
 		textView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2];
 		textView.delegate = self;
+		
 		[self.view addSubview:textView];
+
+###//and if you want to have custom buttons
+		textView.urlCustomArray = [@[
+                                @{
+                                    @"scheme":@"taobao",
+                                    @"title":@"淘宝",
+                                    @"color":@0XF97840
+                                    },
+                                @{
+                                    @"scheme":@"douban",
+                                    @"title":@"豆瓣",
+                                    @"color":@0X72E073
+                                    }
+                                ] mutableCopy];
