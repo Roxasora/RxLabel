@@ -144,9 +144,9 @@ static CGFloat widthCallback(void* ref){
     
     //set line height font color and break mode
     CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)self.font.fontName, self.font.pointSize, NULL);
-    CGFloat minLineHeight = self.font.pointSize + lineHeight_correction,
-    maxLineHeight = minLineHeight,
-    linespacing = self.linespacing;
+//    CGFloat minLineHeight = self.font.pointSize + lineHeight_correction,
+//    maxLineHeight = minLineHeight,
+    CGFloat linespacing = self.linespacing;
     
     CTLineBreakMode lineBreakMode = kCTLineBreakByWordWrapping;
     CTTextAlignment alignment = CTTextAlignmentFromNSTextAlignment(self.textAlignment);
@@ -159,7 +159,6 @@ static CGFloat widthCallback(void* ref){
         {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(linespacing),&linespacing},
         {kCTParagraphStyleSpecifierLineBreakMode,sizeof(lineBreakMode),&lineBreakMode}
     }, 4);
-    
     
     NSDictionary* initAttrbutes = @{
                                     (NSString*)kCTFontAttributeName: (__bridge id)fontRef,
@@ -197,15 +196,9 @@ static CGFloat widthCallback(void* ref){
         
         NSRange range = [[urlItem objectForKey:@"range"] rangeValue];
         NSString* urlStr = [urlItem objectForKey:@"urlStr"];
-//        CTParagraphStyleRef runStyle = CTParagraphStyleCreate((CTParagraphStyleSetting[3]){
-//            {kCTParagraphStyleSpecifierAlignment,sizeof(alignment),&alignment},
-//            {kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(linespacing),&linespacing},
-//            {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(linespacing),&linespacing},
-//        }, 3);
         CFAttributedStringSetAttributes((CFMutableAttributedStringRef)attrStr, CFRangeMake(range.location, range.length), (CFDictionaryRef)@{
                                                                                                                                              (NSString*)kCTRunDelegateAttributeName:(__bridge id)delegate,
                                                                                                                                              @"url":urlStr
-//                                                                                                                                             (NSString*)kCTParagraphStyleAttributeName:(id)runStyle
                                                                                                                                              }, NO);
         CFRelease(delegate);
     }
@@ -350,8 +343,8 @@ static CGFloat widthCallback(void* ref){
     //set line height font color and break mode
     CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
     
-    CGFloat minLineHeight = font.pointSize + lineHeight_correction,
-    maxLineHeight = minLineHeight;
+//    CGFloat minLineHeight = font.pointSize + lineHeight_correction,
+//    maxLineHeight = minLineHeight;
     
     CTLineBreakMode lineBreakMode = kCTLineBreakByWordWrapping;
     CTTextAlignment alignment = kCTLeftTextAlignment;
@@ -408,27 +401,27 @@ static CGFloat widthCallback(void* ref){
     height += 5;
     
     return height;
-    CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, attrStr.length), path, NULL);
-    
-    //get lines in frame
-    NSArray* lines = (NSArray*)CTFrameGetLines(frame);
-    CFIndex lineCount = [lines count];
-    
-    //get origin point of each line
-    CGPoint origins[lineCount];
-    CTFrameGetLineOrigins(frame, CFRangeMake(0, 0), origins);
-    
-    CGFloat colHeight = 9999;
-    
-    height = 9999 - origins[lines.count - 1].y;
-    
-    //add down correction
-    height += 6;
-    height = ceilf(height);
-    
-    CFRelease(frameSetter);
-    
-    return height;
+//    CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, attrStr.length), path, NULL);
+//    
+//    //get lines in frame
+//    NSArray* lines = (NSArray*)CTFrameGetLines(frame);
+//    CFIndex lineCount = [lines count];
+//    
+//    //get origin point of each line
+//    CGPoint origins[lineCount];
+//    CTFrameGetLineOrigins(frame, CFRangeMake(0, 0), origins);
+//    
+//    CGFloat colHeight = 9999;
+//    
+//    height = 9999 - origins[lines.count - 1].y;
+//    
+//    //add down correction
+//    height += 6;
+//    height = ceilf(height);
+//    
+//    CFRelease(frameSetter);
+//    
+//    return height;
 }
 
 #pragma mark - RxTextLinkTapView delegate

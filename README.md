@@ -7,10 +7,19 @@ like the screen shot
 ![image](http://img.hb.aicdn.com/4480f54604e65ac07eea9286f4f2d2063930a7a5f0d1-K5LMRV_fw658)
 
 ### usage
+
+####Install
+You just need to drag/copy the "RxTextView" folder and drop in your project
+
+####properties
+
 you can use it just like a UITextView
    
 		NSString* textStr = @"http://weibo.com/1694819202 hello Indian MI fans~~~\nExcept normal urls\nthis is a taobao url http://taobao.com this is a Github url https://github.com/Roxasora/RxTextView";
+		
+		//You can get the height of textview with configs easily
 		CGFloat height = [RxTextView heightForText:textStr width:(SCREEN_WIDTH-60) font:[UIFont systemFontOfSize:16] 			linespacing:5];
+		
 		textView = [[RxTextView alloc] initWithFrame:CGRectMake(30, 30, (SCREEN_WIDTH-60), height)];
 		textView.textColor = [UIColor grayColor];
 		textView.font = [UIFont systemFontOfSize:16];

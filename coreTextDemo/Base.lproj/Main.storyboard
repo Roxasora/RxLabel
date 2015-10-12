@@ -39,8 +39,8 @@
                                             <action selector="fontSizeSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="l4f-1I-uEy"/>
                                         </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="font size" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvY-Qh-8WB">
-                                        <rect key="frame" x="20" y="490" width="100" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="font size" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvY-Qh-8WB">
+                                        <rect key="frame" x="20" y="484" width="100" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="Ejq-Ey-qqn"/>
                                         </constraints>
@@ -55,8 +55,8 @@
                                             <action selector="lineSpacingSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="zEE-xj-7A4"/>
                                         </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="lineSpacing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qkF-gz-fwd">
-                                        <rect key="frame" x="20" y="445" width="100" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lineSpacing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qkF-gz-fwd">
+                                        <rect key="frame" x="20" y="439" width="100" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="iMr-Vl-gLu"/>
                                         </constraints>
