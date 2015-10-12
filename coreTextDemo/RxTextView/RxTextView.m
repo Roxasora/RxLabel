@@ -84,6 +84,11 @@
     [self setNeedsDisplay];
 }
 
+-(void)setCustomUrlArray:(NSMutableArray *)customUrlArray{
+    _customUrlArray = customUrlArray;
+    [self setNeedsDisplay];
+}
+
 static CTTextAlignment CTTextAlignmentFromNSTextAlignment(NSTextAlignment alignment){
     switch (alignment) {
         case NSTextAlignmentCenter: return kCTCenterTextAlignment;
@@ -289,7 +294,7 @@ static CGFloat widthCallback(void* ref){
     buttonView.delegate = self;
     
     //handle custom url array
-    for (NSDictionary* item in self.urlCustomArray) {
+    for (NSDictionary* item in self.customUrlArray) {
         NSString* scheme = item[@"scheme"];
         //when match
         if ([urlStr rangeOfString:scheme].location != NSNotFound) {

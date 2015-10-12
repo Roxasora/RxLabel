@@ -49,7 +49,7 @@ static NSString* textStr = @"http://weibo.com/1694819202 hello Indian MI fans~~~
     textView.text = textStr;
     
     //if you want to custom the different color and title for particular urls, do like this
-    textView.urlCustomArray = [@[
+    textView.customUrlArray = [@[
                                 @{
                                     @"scheme":@"taobao",
                                     @"title":@"淘宝",
@@ -69,10 +69,13 @@ static NSString* textStr = @"http://weibo.com/1694819202 hello Indian MI fans~~~
     // Dispose of any resources that can be recreated.
 }
 
+#pragma textview delegate
 -(void)RxTextView:(RxTextView *)textView didDetectedTapLinkWithUrlStr:(NSString *)urlStr{
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"url tapped" message:urlStr delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
     [alert show];
 }
+
+#pragma mark - tools action
 - (IBAction)alignSegmentValueChanged:(id)sender {
     UISegmentedControl* seg = (UISegmentedControl*)sender;
     switch (seg.selectedSegmentIndex) {
