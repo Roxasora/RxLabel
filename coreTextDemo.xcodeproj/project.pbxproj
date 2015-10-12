@@ -15,7 +15,6 @@
 		F551ABED1BC64DE60091549F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F551ABEB1BC64DE60091549F /* LaunchScreen.storyboard */; };
 		F551ABF81BC64DE60091549F /* coreTextDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F551ABF71BC64DE60091549F /* coreTextDemoTests.m */; };
 		F551AC031BC64DE60091549F /* coreTextDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC021BC64DE60091549F /* coreTextDemoUITests.m */; };
-		F551AC131BC64E2A0091549F /* RxTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC121BC64E2A0091549F /* RxTextView.m */; settings = {ASSET_TAGS = (); }; };
 		F551AC3D1BC64F380091549F /* UIScreen+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC151BC64F380091549F /* UIScreen+Additions.m */; settings = {ASSET_TAGS = (); }; };
 		F551AC3E1BC64F380091549F /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC171BC64F380091549F /* UIView+Additions.m */; settings = {ASSET_TAGS = (); }; };
 		F551AC3F1BC64F380091549F /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC191BC64F380091549F /* NSString+Additions.m */; settings = {ASSET_TAGS = (); }; };
@@ -36,7 +35,8 @@
 		F551AC4E1BC64F380091549F /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC381BC64F380091549F /* UIImageView+WebCache.m */; settings = {ASSET_TAGS = (); }; };
 		F551AC4F1BC64F380091549F /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC3A1BC64F380091549F /* UIView+WebCacheOperation.m */; settings = {ASSET_TAGS = (); }; };
 		F551AC521BC650590091549F /* UIColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC511BC650590091549F /* UIColor+Additions.m */; settings = {ASSET_TAGS = (); }; };
-		F551AC561BC769F50091549F /* RxTextLinkTapView.m in Sources */ = {isa = PBXBuildFile; fileRef = F551AC551BC769F50091549F /* RxTextLinkTapView.m */; settings = {ASSET_TAGS = (); }; };
+		F5CA88001BCBF51400F2B3B2 /* RxLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA87FD1BCBF51400F2B3B2 /* RxLabel.m */; settings = {ASSET_TAGS = (); }; };
+		F5CA88011BCBF51400F2B3B2 /* RxTextLinkTapView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA87FF1BCBF51400F2B3B2 /* RxTextLinkTapView.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,8 +73,6 @@
 		F551ABFE1BC64DE60091549F /* coreTextDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = coreTextDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F551AC021BC64DE60091549F /* coreTextDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coreTextDemoUITests.m; sourceTree = "<group>"; };
 		F551AC041BC64DE60091549F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F551AC111BC64E2A0091549F /* RxTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RxTextView.h; path = RxTextView/RxTextView.h; sourceTree = "<group>"; };
-		F551AC121BC64E2A0091549F /* RxTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RxTextView.m; path = RxTextView/RxTextView.m; sourceTree = "<group>"; };
 		F551AC141BC64F380091549F /* UIScreen+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+Additions.h"; sourceTree = "<group>"; };
 		F551AC151BC64F380091549F /* UIScreen+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+Additions.m"; sourceTree = "<group>"; };
 		F551AC161BC64F380091549F /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
@@ -117,8 +115,10 @@
 		F551AC501BC650590091549F /* UIColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Additions.h"; sourceTree = "<group>"; };
 		F551AC511BC650590091549F /* UIColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Additions.m"; sourceTree = "<group>"; };
 		F551AC531BC658E40091549F /* coreTextDemo-prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "coreTextDemo-prefix.pch"; sourceTree = "<group>"; };
-		F551AC541BC769F50091549F /* RxTextLinkTapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RxTextLinkTapView.h; path = RxTextView/RxTextLinkTapView.h; sourceTree = "<group>"; };
-		F551AC551BC769F50091549F /* RxTextLinkTapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RxTextLinkTapView.m; path = RxTextView/RxTextLinkTapView.m; sourceTree = "<group>"; };
+		F5CA87FC1BCBF51400F2B3B2 /* RxLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RxLabel.h; sourceTree = "<group>"; };
+		F5CA87FD1BCBF51400F2B3B2 /* RxLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RxLabel.m; sourceTree = "<group>"; };
+		F5CA87FE1BCBF51400F2B3B2 /* RxTextLinkTapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RxTextLinkTapView.h; sourceTree = "<group>"; };
+		F5CA87FF1BCBF51400F2B3B2 /* RxTextLinkTapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RxTextLinkTapView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,7 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				F551AC3C1BC64F380091549F /* support */,
-				F551AC101BC64DFF0091549F /* RxTextView */,
+				F5CA87FB1BCBF51400F2B3B2 /* RxLabel */,
 				F551ABE01BC64DE50091549F /* AppDelegate.h */,
 				F551ABE11BC64DE50091549F /* AppDelegate.m */,
 				F551ABE31BC64DE50091549F /* ViewController.h */,
@@ -209,17 +209,6 @@
 				F551AC041BC64DE60091549F /* Info.plist */,
 			);
 			path = coreTextDemoUITests;
-			sourceTree = "<group>";
-		};
-		F551AC101BC64DFF0091549F /* RxTextView */ = {
-			isa = PBXGroup;
-			children = (
-				F551AC111BC64E2A0091549F /* RxTextView.h */,
-				F551AC121BC64E2A0091549F /* RxTextView.m */,
-				F551AC541BC769F50091549F /* RxTextLinkTapView.h */,
-				F551AC551BC769F50091549F /* RxTextLinkTapView.m */,
-			);
-			name = RxTextView;
 			sourceTree = "<group>";
 		};
 		F551AC3B1BC64F380091549F /* SDWebImage */ = {
@@ -278,6 +267,18 @@
 			name = support;
 			path = ../../../../../gitRep/VVeboTableViewDemo/VVeboTableViewDemo;
 			sourceTree = "<group>";
+		};
+		F5CA87FB1BCBF51400F2B3B2 /* RxLabel */ = {
+			isa = PBXGroup;
+			children = (
+				F5CA87FC1BCBF51400F2B3B2 /* RxLabel.h */,
+				F5CA87FD1BCBF51400F2B3B2 /* RxLabel.m */,
+				F5CA87FE1BCBF51400F2B3B2 /* RxTextLinkTapView.h */,
+				F5CA87FF1BCBF51400F2B3B2 /* RxTextLinkTapView.m */,
+			);
+			name = RxLabel;
+			path = coreTextDemo/RxLabel;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -418,7 +419,7 @@
 				F551AC481BC64F380091549F /* SDWebImagePrefetcher.m in Sources */,
 				F551AC3F1BC64F380091549F /* NSString+Additions.m in Sources */,
 				F551AC4F1BC64F380091549F /* UIView+WebCacheOperation.m in Sources */,
-				F551AC561BC769F50091549F /* RxTextLinkTapView.m in Sources */,
+				F5CA88011BCBF51400F2B3B2 /* RxTextLinkTapView.m in Sources */,
 				F551AC401BC64F380091549F /* MKAnnotationView+WebCache.m in Sources */,
 				F551AC4C1BC64F380091549F /* UIImage+WebP.m in Sources */,
 				F551AC3E1BC64F380091549F /* UIView+Additions.m in Sources */,
@@ -428,11 +429,11 @@
 				F551AC4D1BC64F380091549F /* UIImageView+HighlightedWebCache.m in Sources */,
 				F551AC411BC64F380091549F /* NSData+ImageContentType.m in Sources */,
 				F551AC451BC64F380091549F /* SDWebImageDownloader.m in Sources */,
-				F551AC131BC64E2A0091549F /* RxTextView.m in Sources */,
 				F551ABE21BC64DE50091549F /* AppDelegate.m in Sources */,
 				F551AC3D1BC64F380091549F /* UIScreen+Additions.m in Sources */,
 				F551AC471BC64F380091549F /* SDWebImageManager.m in Sources */,
 				F551ABDF1BC64DE50091549F /* main.m in Sources */,
+				F5CA88001BCBF51400F2B3B2 /* RxLabel.m in Sources */,
 				F551AC421BC64F380091549F /* SDImageCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -665,6 +666,7 @@
 				F551AC091BC64DE60091549F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F551AC0A1BC64DE60091549F /* Build configuration list for PBXNativeTarget "coreTextDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -673,6 +675,7 @@
 				F551AC0C1BC64DE60091549F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F551AC0D1BC64DE60091549F /* Build configuration list for PBXNativeTarget "coreTextDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -681,6 +684,7 @@
 				F551AC0F1BC64DE60091549F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,12 +1,12 @@
 //
-//  RxTextView.m
+//  RxLabel.m
 //  coreTextDemo
 //
 //  Created by roxasora on 15/10/8.
 //  Copyright © 2015年 roxasora. All rights reserved.
 //
 
-#import "RxTextView.h"
+#import "RxLabel.h"
 #import <CoreText/CoreText.h>
 #import "RxTextLinkTapView.h"
 
@@ -20,11 +20,11 @@
 #define subviewsTag_linkTapViews -333
 #define lineHeight_correction 3 //correct the line height
 
-@interface RxTextView ()<RxTextLinkTapViewDelegate>
+@interface RxLabel ()<RxTextLinkTapViewDelegate>
 
 @end
 
-@implementation RxTextView
+@implementation RxLabel
 
 -(id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
@@ -183,7 +183,7 @@ static CGFloat widthCallback(void* ref){
      */
     NSMutableArray* urlArray = [NSMutableArray array];
     NSString* filteredText = [[NSString alloc] init];
-    [RxTextView filtUrlWithOriginText:self.text urlArray:urlArray filteredText:&filteredText];
+    [RxLabel filtUrlWithOriginText:self.text urlArray:urlArray filteredText:&filteredText];
     
     //init the attributed string
     NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] initWithString:filteredText
@@ -276,7 +276,7 @@ static CGFloat widthCallback(void* ref){
 
 -(void)sizeToFit{
     [super sizeToFit];
-    CGFloat height = [RxTextView heightForText:self.text width:self.bounds.size.width font:self.font linespacing:self.linespacing];
+    CGFloat height = [RxLabel heightForText:self.text width:self.bounds.size.width font:self.font linespacing:self.linespacing];
     CGRect frame = self.frame;
     frame.size.height = height;
     self.frame = frame;
@@ -371,7 +371,7 @@ static CGFloat widthCallback(void* ref){
     
     NSMutableArray* urlArray = [NSMutableArray array];
     NSString* filteredText = [[NSString alloc] init];
-    [RxTextView filtUrlWithOriginText:text urlArray:urlArray filteredText:&filteredText];
+    [RxLabel filtUrlWithOriginText:text urlArray:urlArray filteredText:&filteredText];
     
     //create the initial attributed string
     NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] initWithString:filteredText
@@ -432,17 +432,17 @@ static CGFloat widthCallback(void* ref){
 #pragma mark - RxTextLinkTapView delegate
 -(void)RxTextLinkTapView:(RxTextLinkTapView *)linkTapView didDetectTapWithUrlStr:(NSString *)urlStr{
 //    NSLog(@"link tapped !! %@",urlStr);
-    if ([self.delegate respondsToSelector:@selector(RxTextView:didDetectedTapLinkWithUrlStr:)]) {
-        [self.delegate RxTextView:self didDetectedTapLinkWithUrlStr:urlStr];
+    if ([self.delegate respondsToSelector:@selector(RxLabel:didDetectedTapLinkWithUrlStr:)]) {
+        [self.delegate RxLabel:self didDetectedTapLinkWithUrlStr:urlStr];
     }
 }
 
 -(void)RxTextLinkTapView:(RxTextLinkTapView *)linkTapView didBeginHighlightedWithUrlStr:(NSString *)urlStr{
-    [self setOtherLinkTapViewHightlighted:YES withUrlStr:urlStr];
+//    [self setOtherLinkTapViewHightlighted:YES withUrlStr:urlStr];
 }
 
 -(void)RxTextLinkTapView:(RxTextLinkTapView *)linkTapView didEndHighlightedWithUrlStr:(NSString *)urlStr{
-    [self setOtherLinkTapViewHightlighted:NO withUrlStr:urlStr];
+//    [self setOtherLinkTapViewHightlighted:NO withUrlStr:urlStr];
 }
 
 -(void)setOtherLinkTapViewHightlighted:(BOOL)hightlighted withUrlStr:(NSString*)urlStr{

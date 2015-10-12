@@ -1,5 +1,5 @@
 //
-//  RxTextView.h
+//  RxLabel.h
 //  coreTextDemo
 //
 //  Created by roxasora on 15/10/8.
@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol RxTextViewDelegate;
+@protocol RxLabelDelegate;
 
-@interface RxTextView : UIView
+@interface RxLabel : UIView
 
-@property id<RxTextViewDelegate> delegate;
+@property id<RxLabelDelegate> delegate;
 
 
 /**
@@ -88,8 +88,8 @@
 
 @end
 
-@protocol RxTextViewDelegate <NSObject>
+@protocol RxLabelDelegate <NSObject>
 
--(void)RxTextView:(RxTextView*)textView didDetectedTapLinkWithUrlStr:(NSString*)urlStr;
+-(void)RxLabel:(RxLabel*)label didDetectedTapLinkWithUrlStr:(NSString*)urlStr;
 
 @end
