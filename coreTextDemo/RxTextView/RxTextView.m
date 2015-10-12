@@ -33,6 +33,7 @@
         _textColor = UIColorFromRGB(0X333333);
         _linkButtonColor = UIColorFromRGB(0X2081ef);
         _linespacing = 0;
+        _textAlignment = NSTextAlignmentLeft;
         
         self.backgroundColor = [UIColor clearColor];
     }
@@ -60,13 +61,20 @@
     [self setNeedsDisplay];
 }
 
+-(void)setTextAlignment:(NSTextAlignment)textAlignment{
+    _textAlignment = textAlignment;
+    [self setNeedsDisplay];
+}
+
 -(void)setLinkButtonColor:(UIColor *)linkButtonColor{
     _linkButtonColor = linkButtonColor;
     for (UIView* subview in self.subviews) {
         if (subview.tag == NSIntegerMin) {
-            RxTextLinkTapView* tapView = (RxTextLinkTapView*)tapView;
-            //            tapView.tapColor = linkTapViewColor;
-            tapView.backgroundColor = linkButtonColor;
+            RxTextLinkTapView* buttonView = nil;
+            buttonView = (RxTextLinkTapView*)subview;
+            if (buttonView.type == RxTextLinkTapViewTypeDefault) {
+                buttonView.backgroundColor = linkButtonColor;
+            }
         }
     }
 }
@@ -76,11 +84,20 @@
     [self setNeedsDisplay];
 }
 
+static CTTextAlignment CTTextAlignmentFromNSTextAlignment(NSTextAlignment alignment){
+    switch (alignment) {
+        case NSTextAlignmentCenter: return kCTCenterTextAlignment;
+        case NSTextAlignmentLeft:   return kCTLeftTextAlignment;
+        case NSTextAlignmentRight:  return kCTRightTextAlignment;
+        default:                    return kCTNaturalTextAlignment;
+    }
+}
+
 
 #pragma mark - url replace run delegate
 static CGFloat ascentCallback(void *ref){
+    //!the height must fit the fontsize of titleView
     return [(__bridge UIFont*)ref pointSize] + 2;
-    return 18.0;
     return [(NSNumber*)[(__bridge NSDictionary*)ref objectForKey:@"height"] floatValue];
 }
 
@@ -132,7 +149,7 @@ static CGFloat widthCallback(void* ref){
     linespacing = self.linespacing;
     
     CTLineBreakMode lineBreakMode = kCTLineBreakByWordWrapping;
-    CTTextAlignment alignment = kCTLeftTextAlignment;
+    CTTextAlignment alignment = CTTextAlignmentFromNSTextAlignment(self.textAlignment);
     
     CTParagraphStyleRef style = CTParagraphStyleCreate((CTParagraphStyleSetting[4]){
         {kCTParagraphStyleSpecifierAlignment,sizeof(alignment),&alignment},
@@ -180,38 +197,19 @@ static CGFloat widthCallback(void* ref){
         
         NSRange range = [[urlItem objectForKey:@"range"] rangeValue];
         NSString* urlStr = [urlItem objectForKey:@"urlStr"];
+//        CTParagraphStyleRef runStyle = CTParagraphStyleCreate((CTParagraphStyleSetting[3]){
+//            {kCTParagraphStyleSpecifierAlignment,sizeof(alignment),&alignment},
+//            {kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(linespacing),&linespacing},
+//            {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(linespacing),&linespacing},
+//        }, 3);
         CFAttributedStringSetAttributes((CFMutableAttributedStringRef)attrStr, CFRangeMake(range.location, range.length), (CFDictionaryRef)@{
                                                                                                                                              (NSString*)kCTRunDelegateAttributeName:(__bridge id)delegate,
                                                                                                                                              @"url":urlStr
+//                                                                                                                                             (NSString*)kCTParagraphStyleAttributeName:(id)runStyle
                                                                                                                                              }, NO);
         CFRelease(delegate);
     }
-    /*
-    //检测url
-    NSArray* urlMatches = [[NSRegularExpression regularExpressionWithPattern:RxUrlRegular
-                                                                     options:NSRegularExpressionDotMatchesLineSeparators error:nil]
-                           matchesInString:self.text
-                           options:0
-                           range:NSMakeRange(0, self.text.length)];
-    for (NSTextCheckingResult* match in urlMatches) {
-        NSString* urlStr = [self.text substringWithRange:match.range];
-        
-        [attrStr addAttributes:@{
-                                 @"url":urlStr,
-                                 NSBackgroundColorAttributeName:(id)[UIColor redColor],
-                                 (NSString*)kCTForegroundColorAttributeName:(id)self.linkColor.CGColor
-                                 }
-                         range:match.range]; 
-     }
-     */
-    
-    
     CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attrStr);
-    
-    CGSize restrictSize = CGSizeMake(self.bounds.size.width, 10000);
-    CGSize coreTestSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, 0), nil, restrictSize, nil);
-//    NSLog(@"drawn size %@",[NSValue valueWithCGSize:coreTestSize]);
-    
     CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, attrStr.length), path, NULL);
     
     //clear link tap views and create new link tap view
@@ -240,6 +238,8 @@ static CGFloat widthCallback(void* ref){
             CTRunRef run = CFArrayGetValueAtIndex(glyphRuns, i);
             
             NSDictionary* attrbutes = (NSDictionary*)CTRunGetAttributes(run);
+            //create hover frame
+            if ([attrbutes objectForKey:@"url"]) {
             
                 CGRect runBounds;
                 
@@ -248,33 +248,20 @@ static CGFloat widthCallback(void* ref){
                 runBounds.size.width = CTRunGetTypographicBounds(run, CFRangeMake(0, 0), &ascent, &descent, NULL);
                 runBounds.size.height = ascent + descent;
                 
-                runBounds.origin.x = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, NULL);
+                //!make sure you've add the origin of the line, or your alignment will not work on url replace runs
+                runBounds.origin.x = origins[index].x + CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, NULL);
                 runBounds.origin.y = self.frame.size.height - origins[index].y - runBounds.size.height;
             
                 //加上之前给 path 挪动位置时的修正
                 //add correction of move the path
                 runBounds.origin.y += 5;
             
-#ifdef RXDEBUG
+    #ifdef RXDEBUG
                 UIView* randomView = [[UIView alloc] initWithFrame:runBounds];
                 randomView.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:0.2];
                 [self addSubview:randomView];
-#endif
-                
-//                CGRect rect = runBounds;
-//                rect.origin.y += 3;
-//                //create temp
-//                UIButton* tempView = [[UIButton alloc] initWithFrame:rect];
-//                tempView.layer.cornerRadius = 3;
-//                tempView.backgroundColor = [UIColor blueColor];
-//                [tempView setTitle:@"网页链接" forState:UIControlStateNormal];
-//                [tempView setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//                [tempView setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
-//                [tempView.titleLabel setFont:[UIFont systemFontOfSize:11]];
-//                [self addSubview:tempView];
-                
-                //create hover frame
-            if ([attrbutes objectForKey:@"url"]) {
+    #endif
+            
                 NSString* urlStr = attrbutes[@"url"];
                 RxTextLinkTapView* linkButtonView = [self linkButtonViewWithFrame:runBounds UrlStr:urlStr];
                 [self addSubview:linkButtonView];
@@ -289,16 +276,23 @@ static CGFloat widthCallback(void* ref){
     CFRelease(path);
 }
 
+-(void)sizeToFit{
+    [super sizeToFit];
+    CGFloat height = [RxTextView heightForText:self.text width:self.bounds.size.width font:self.font linespacing:self.linespacing];
+    CGRect frame = self.frame;
+    frame.size.height = height;
+    self.frame = frame;
+}
+
+#pragma mark create link replace button with url
 -(RxTextLinkTapView*)linkButtonViewWithFrame:(CGRect)frame UrlStr:(NSString*)urlStr{
     RxTextLinkTapView* buttonView = [[RxTextLinkTapView alloc] initWithFrame:frame
                                                                      urlStr:urlStr
                                                                        font:self.font
                                                                 linespacing:self.linespacing];
-    //                hoverView.tapColor = self.linkTapViewColor;
     buttonView.tag = NSIntegerMin;
-    
-    buttonView.title = @"网页";
     buttonView.backgroundColor = self.linkButtonColor;
+    buttonView.title = @"网页";
     buttonView.delegate = self;
     
     //handle custom url array
@@ -306,6 +300,7 @@ static CGFloat widthCallback(void* ref){
         NSString* scheme = item[@"scheme"];
         //when match
         if ([urlStr rangeOfString:scheme].location != NSNotFound) {
+            buttonView.type = RxTextLinkTapViewTypeCustom;
             buttonView.backgroundColor = UIColorFromRGB([item[@"color"] integerValue]);
             buttonView.title = item[@"title"];
         }
@@ -314,6 +309,7 @@ static CGFloat widthCallback(void* ref){
     return buttonView;
 }
 
+#pragma mark - filter url and generate display text and url array
 +(void)filtUrlWithOriginText:(NSString *)originText urlArray:(NSMutableArray *)urlArray filteredText:(NSString *__autoreleasing *)filterText{
     *filterText = [NSString stringWithString:originText];
     NSArray* urlMatches = [[NSRegularExpression regularExpressionWithPattern:RxUrlRegular
@@ -344,6 +340,7 @@ static CGFloat widthCallback(void* ref){
     }
 }
 
+#pragma mark - get height for particular configs
 +(CGFloat)heightForText:(NSString *)text width:(CGFloat)width font:(UIFont *)font linespacing:(CGFloat)linespacing{
     CGFloat height = 0;
     
@@ -381,7 +378,6 @@ static CGFloat widthCallback(void* ref){
     //create the initial attributed string
     NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] initWithString:filteredText
                                                                                 attributes:initAttrbutes];
-    
     for (NSDictionary* urlItem in urlArray) {
         //init run callbacks
         CTRunDelegateCallbacks callbacks;
@@ -426,7 +422,7 @@ static CGFloat widthCallback(void* ref){
     
     height = 9999 - origins[lines.count - 1].y;
     
-    //加上偏移补全量
+    //add down correction
     height += 6;
     height = ceilf(height);
     

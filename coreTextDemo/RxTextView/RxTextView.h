@@ -26,6 +26,11 @@
 @property (nonatomic,strong)UIColor* textColor;
 
 /**
+ *  text alignment with NSTextAlignment
+ */
+@property (nonatomic) NSTextAlignment textAlignment;
+
+/**
  *  font default is 16
  */
 @property (nonatomic,strong)UIFont* font;
@@ -62,6 +67,12 @@
  *
  *  @return float height
  */
+
+/**
+ *  fit the best size
+ */
+-(void)sizeToFit;
+
 +(CGFloat)heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font linespacing:(CGFloat)linespacing;
 +(void)filtUrlWithOriginText:(NSString*)originText urlArray:(NSMutableArray*)urlArray filteredText:(NSString**)filterText;
 

@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum : NSUInteger {
+    RxTextLinkTapViewTypeDefault,
+    RxTextLinkTapViewTypeCustom
+} RxTextLinkTapViewType;
+
 @protocol RxTextLinkTapViewDelegate;
 
 @interface RxTextLinkTapView : UIView
@@ -26,6 +31,11 @@
  *  delegate
  */
 @property id<RxTextLinkTapViewDelegate> delegate;
+
+/**
+ *  type of tap view,default has same bg color, custom has own bg color
+ */
+@property (nonatomic) RxTextLinkTapViewType type;
 
 /**
  *  nsstring url
@@ -48,7 +58,7 @@
 @property (nonatomic)CGFloat linespacing;
 
 /**
- *  if replace the url,if yes then show a small round corner button with title, if no then show a hover layer
+ *  Deprecated... if replace the url,if yes then show a small round corner button with title, if no then show a hover layer
  */
 @property (nonatomic)BOOL isReplaceUrl;
 

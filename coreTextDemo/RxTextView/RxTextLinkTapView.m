@@ -36,11 +36,13 @@
         self.layer.cornerRadius = 3;
         self.highlighted = NO;
         self.backgroundColor = [UIColor clearColor];
+        self.type = RxTextLinkTapViewTypeDefault;
+//        self.isReplaceUrl =YES;
         
         self.title = @"网页";
-        self.isReplaceUrl =YES;
-        
         self.linespacing = 0;
+        
+        [self addSubview:self.titleLabel];
         
         UITapGestureRecognizer* tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self addGestureRecognizer:tapGes];
@@ -49,15 +51,7 @@
 }
 
 -(id)initWithFrame:(CGRect)frame urlStr:(NSString *)urlStr font:(UIFont *)font linespacing:(CGFloat)linespacing{
-    
-//    frame.origin.x -= 3;
-//    frame.origin.y += (font.pointSize/16 * 4);
-//    frame.size.height += 3;
-//    frame.size.width += 6;
-    
-    frame.origin.y += (font.pointSize/16 * 2.5);
-    
-//    frame.size.height += 4;
+    frame.origin.y += (font.pointSize/16 * 2.8);
     
     self = [self initWithFrame:frame];
     self.urlStr = urlStr;
@@ -65,6 +59,7 @@
     return self;
 }
 
+/*
 -(void)setIsReplaceUrl:(BOOL)isReplaceUrl{
     _isReplaceUrl = isReplaceUrl;
     //如果替换，就显示为有颜色的，固体的
@@ -75,6 +70,7 @@
         self.backgroundColor = [UIColor clearColor];
     }
 }
+ */
 
 -(void)setTitle:(NSString *)title{
     _title = title;
@@ -102,6 +98,23 @@
     [self setHighlighted:NO];
 }
 
+-(void)setHighlighted:(BOOL)highlighted{
+    _highlighted = highlighted;
+    //    NSLog(@"cao nim ");
+    if (highlighted) {
+        self.alpha = 0.55;
+        if ([self.delegate respondsToSelector:@selector(RxTextLinkTapView:didBeginHighlightedWithUrlStr:)]) {
+            [self.delegate RxTextLinkTapView:self didBeginHighlightedWithUrlStr:self.urlStr];
+        }
+    }else{
+        self.alpha = 1;
+        if ([self.delegate respondsToSelector:@selector(RxTextLinkTapView:didEndHighlightedWithUrlStr:)]) {
+            [self.delegate RxTextLinkTapView:self didEndHighlightedWithUrlStr:self.urlStr];
+        }
+    }
+}
+
+/*
 -(void)setHighlighted:(BOOL)highlighted{
     _highlighted = highlighted;
 //    NSLog(@"cao nim ");
@@ -136,6 +149,7 @@
         }
     }
 }
+ */
 
 -(void)handleTap:(UITapGestureRecognizer*)sender{
     [self setHighlighted:YES];
