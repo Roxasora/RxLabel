@@ -2,9 +2,11 @@
 
 ##it's a custom UITextView that could detect urls and replace them with buttons,just like weico/vvebo apps,used coreText.
 
-like the screen shot
 
-![image](http://img.hb.aicdn.com/4480f54604e65ac07eea9286f4f2d2063930a7a5f0d1-K5LMRV_fw658)
+
+like the screen shot gif
+
+![image](http://img.hb.aicdn.com/85a530455028b783b8d33c966ff9a11e06b9a5bf58397-kCYPn5_fw658)
 
 ### usage
 
