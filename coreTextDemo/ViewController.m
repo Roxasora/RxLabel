@@ -36,7 +36,10 @@ static NSString* textStr = @"http://weibo.com/1694819202 hello Indian MI fans~~~
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    CGFloat height = [RxLabel heightForText:textStr width:labelWidth font:[UIFont systemFontOfSize:fontSize] linespacing:lineSpacing];
+    CGFloat height = [RxLabel heightForText:textStr
+                                      width:labelWidth
+                                       font:[UIFont systemFontOfSize:fontSize]
+                                linespacing:lineSpacing];
     
     label = [[RxLabel alloc] initWithFrame:CGRectMake(margin, margin*1.5, labelWidth, height)];
     
@@ -71,7 +74,11 @@ static NSString* textStr = @"http://weibo.com/1694819202 hello Indian MI fans~~~
 
 #pragma label delegate
 -(void)RxLabel:(RxLabel *)label didDetectedTapLinkWithUrlStr:(NSString *)urlStr{
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"url tapped" message:urlStr delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"url tapped"
+                                                    message:urlStr
+                                                   delegate:nil
+                                          cancelButtonTitle:@"ok"
+                                          otherButtonTitles:nil];
     [alert show];
 }
 
