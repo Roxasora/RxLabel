@@ -4,12 +4,12 @@
 
 like the screen shot
 
-![image](http://img.hb.aicdn.com/e0184526e5a4355fe8374b6cd01ffc9ea56973529276-32CcAY_fw658)
+![image](http://img.hb.aicdn.com/4480f54604e65ac07eea9286f4f2d2063930a7a5f0d1-K5LMRV_fw658)
 
 ### usage
 you can use it just like a UITextView
    
-		NSString* textStr = @"http://weibo.com hello, thank you and you??? http://baidu.com";
+		NSString* textStr = @"http://weibo.com/1694819202 hello Indian MI fans~~~\nExcept normal urls\nthis is a taobao url http://taobao.com this is a Github url https://github.com/Roxasora/RxTextView";
 		CGFloat height = [RxTextView heightForText:textStr width:(SCREEN_WIDTH-60) font:[UIFont systemFontOfSize:16] 			linespacing:5];
 		textView = [[RxTextView alloc] initWithFrame:CGRectMake(30, 30, (SCREEN_WIDTH-60), height)];
 		textView.textColor = [UIColor grayColor];
@@ -17,6 +17,7 @@ you can use it just like a UITextView
 		textView.linespacing = 5;
 		textView.linkButtonColor = [UIColor redColor];
 		textView.text = textStr;
+		textView.textAlignment = NSTextAlignmentLeft;
 		textView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2];
 		textView.delegate = self;
 		
