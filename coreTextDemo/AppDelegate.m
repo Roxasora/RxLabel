@@ -17,6 +17,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    NSMutableArray* fuckArray = [NSMutableArray arrayWithObjects:@"1",@"2",@"#", nil];
+    self.array = fuckArray;
+    [self.array removeObjectAtIndex:0];
+    
     return YES;
 }
 

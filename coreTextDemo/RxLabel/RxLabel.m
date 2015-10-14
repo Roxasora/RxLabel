@@ -84,7 +84,7 @@
     [self setNeedsDisplay];
 }
 
--(void)setCustomUrlArray:(NSMutableArray *)customUrlArray{
+-(void)setCustomUrlArray:(NSArray*)customUrlArray{
     _customUrlArray = customUrlArray;
     [self setNeedsDisplay];
 }
@@ -406,27 +406,6 @@ static CGFloat widthCallback(void* ref){
     height += 5;
     
     return height;
-//    CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, attrStr.length), path, NULL);
-//    
-//    //get lines in frame
-//    NSArray* lines = (NSArray*)CTFrameGetLines(frame);
-//    CFIndex lineCount = [lines count];
-//    
-//    //get origin point of each line
-//    CGPoint origins[lineCount];
-//    CTFrameGetLineOrigins(frame, CFRangeMake(0, 0), origins);
-//    
-//    CGFloat colHeight = 9999;
-//    
-//    height = 9999 - origins[lines.count - 1].y;
-//    
-//    //add down correction
-//    height += 6;
-//    height = ceilf(height);
-//    
-//    CFRelease(frameSetter);
-//    
-//    return height;
 }
 
 #pragma mark - RxTextLinkTapView delegate

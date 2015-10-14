@@ -18,7 +18,7 @@
 /**
  *  text
  */
-@property (nonatomic,strong)NSString* text;
+@property (nonatomic,copy)NSString* text;
 
 /**
  *  textColor default is #333333
@@ -56,7 +56,7 @@
  }
  ]
  */
-@property (nonatomic,copy)NSMutableArray* customUrlArray;
+@property (nonatomic,copy)NSArray* customUrlArray;
 
 //**
 // *  add custom url button with your own config

@@ -60,7 +60,7 @@ typedef enum : NSUInteger {
 /**
  *  Deprecated... if replace the url,if yes then show a small round corner button with title, if no then show a hover layer
  */
-@property (nonatomic)BOOL isReplaceUrl;
+//@property (nonatomic)BOOL isReplaceUrl;
 
 /**
  *  replaced title

@@ -52,7 +52,7 @@ static NSString* textStr = @"http://weibo.com/1694819202 hello Indian MI fans~~~
     label.text = textStr;
     
     //if you want to custom the different color and title for particular urls, do like this
-    label.customUrlArray = [@[
+    label.customUrlArray = @[
                                 @{
                                     @"scheme":@"taobao",
                                     @"title":@"淘宝",
@@ -63,7 +63,7 @@ static NSString* textStr = @"http://weibo.com/1694819202 hello Indian MI fans~~~
                                     @"title":@"Github",
                                     @"color":@0X333333
                                     }
-                                ] mutableCopy];
+                                ];
     [self.view addSubview:label];
 }
 
